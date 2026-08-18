@@ -124,6 +124,8 @@ static const char json_no_brak[] =
     "{\"KeyBool\": true,\"KeyInt\": -1234,\"KeyUint\": 1353214,\"KeyString\": \"foobar\",\"KeyStringN\": \"foobarlong\",\"KeyIntArr\": [153,2532,-322}";
 static const char json_no_start[] =
     "\"KeyBool\": true,\"KeyInt\": -1234,\"KeyUint\": 1353214,\"KeyString\": \"foobar\",\"KeyStringN\": \"foobarlong\",\"KeyIntArr\": [153,2532,-322]}";
+static const char json_escape_overflow[] =
+    "{\"KeyBool\": false, \"KeyString\": \"\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\"}";
 
 /* now test the decode on a string */
 TEST_CASE_SELF(test_json_decode_errors)
@@ -167,4 +169,6 @@ TEST_CASE_SELF(test_json_decode_errors)
     TEST_ASSERT(rc != 0);
     rc = json_test_decode(json_no_start);
     TEST_ASSERT(rc != 0);
+    rc = json_test_decode(json_escape_overflow);
+    TEST_ASSERT(rc == JSON_ERR_STRLONG);
 }
